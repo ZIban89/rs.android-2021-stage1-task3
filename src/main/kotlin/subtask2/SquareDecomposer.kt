@@ -4,25 +4,28 @@ package subtask2
 import kotlin.math.*
 
 class SquareDecomposer {
-
     fun decomposeNumber(number: Int): Array<Int>? {
         var arr: Array<Int>?
-        for (i in number-1 downTo 1) {
-            arr = (number * number - i * i).getMaxMember()
-            if(arr != null) return arr.plus(i)
+        for (i in number - 1 downTo 1) {
+            arr = (square(number)  - square(i)).getMaxMember()
+            if (arr != null) return arr.plus(i)
         }
         return null
-
     }
 
-    private fun Int.getMaxMember(): Array<Int>? {
-        val maxMemb = (sqrt(this.toDouble())).toInt()
+    private fun Long.getMaxMember(): Array<Int>? {
+        val maxMember = (sqrt(this.toDouble())).toInt()
         var arr: Array<Int>?
-        for (i in maxMemb downTo 1) {
-            if(this - i * i ==0) return Array(1){i}
-            arr = (this - i * i).getMaxMember()
-            if ( arr?.sumBy { it * it } == this - i * i && !arr.contains(i)) return arr.plus(i)
+        for (i in maxMember downTo 1) {
+            if (this - square(i) == 0L) return Array(1) { i }
+            arr = (this - square(i)).getMaxMember()
+            var tempResult: Long = 0
+            arr?.forEach { tempResult +=square(it) }
+            if (tempResult == this - square(i) && arr!=null && !arr.contains(i)) return arr.plus(i)
         }
-        return  null
+        return null
+    }
+    fun square(i: Int) :Long{
+        return 1L * i * i
     }
 }
